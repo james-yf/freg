@@ -45,6 +45,9 @@ class PlayState(GameState):
         self.score = 0
         self.update_score_surface()
 
+        self.click_sound = pygame.mixer.Sound("assets/audio/pop.wav")
+        self.click_sound.set_volume(0.5)
+
     def _load_fruit_imgs(self):
         for name in PlayState._FRUIT_NAMES:
             img = pygame.image.load(f"assets/imgs/{name}.png").convert()
@@ -75,6 +78,8 @@ class PlayState(GameState):
                     fruit.kill()
                     self.score += 1
                     self.update_score_surface()
+                    self.click_sound.play()
+
 
     def update(self, dt):
         self.fruits.update(dt)
@@ -97,6 +102,12 @@ class Game:
         self.update_icon()
         self.screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
         pygame.display.set_caption("freg")
+
+        pygame.mixer.init()
+        pygame.mixer.music.load("assets/audio/bg.ogg")
+        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.play(-1)
+
         self.running=True
         self.state = PlayState()
 
